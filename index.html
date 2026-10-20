@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Horde Guild HQ | WoW: Forever</title>
+<style>
+:root{--bg:#0d1117;--panel:#151c26;--panel2:#1d2734;--line:#354252;--gold:#f0c674;--red:#8f2b32;--text:#f3f4f6;--muted:#aab4c0;--green:#7bd6a4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#253244 0,#0d1117 58%);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:38px 20px 28px;text-align:center;border-bottom:1px solid #3b4654;background:linear-gradient(180deg,#171f2bdb,#0d1117b5)}
+.eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:.76rem;color:var(--gold);font-weight:800}
+h1{margin:8px 0;font-size:clamp(2rem,6vw,3.7rem);line-height:1.08;text-shadow:0 3px 18px #000}header p{color:var(--muted);max-width:680px;margin:14px auto 0}
+main{max-width:1100px;margin:26px auto;padding:0 16px 50px}.notice{background:#322a1b;border:1px solid #705a30;color:#f7dfaa;padding:12px 14px;border-radius:10px;font-size:.92rem;margin-bottom:20px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:#151c26;color:var(--text);padding:10px 14px;border-radius:10px;font-weight:750;cursor:pointer}.tab.active,.primary{background:var(--red);border-color:#c65b61;color:#fff}.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}.panel{background:linear-gradient(180deg,#192330,#131922);border:1px solid var(--line);border-radius:15px;padding:20px;box-shadow:0 12px 32px #0003}.panel h2{margin:0 0 4px;font-size:1.35rem}.sub{margin:0 0 18px;color:var(--muted);font-size:.92rem}label{display:block;font-size:.9rem;color:#d6dde5;font-weight:700;margin:12px 0 6px}input,select,textarea{width:100%;background:#0e141c;border:1px solid #3b4858;border-radius:9px;padding:11px 12px;color:var(--text);font:inherit}textarea{min-height:82px;resize:vertical}button{font:inherit;font-weight:800;cursor:pointer;border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:var(--panel2);color:var(--text)}button:hover{filter:brightness(1.15)}button:disabled{opacity:.5;cursor:not-allowed}.primary{width:100%;margin-top:16px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.status{min-height:24px;color:var(--green);font-size:.9rem;margin-top:10px}.error{color:#ff9a9a}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}.stat{padding:13px;border-radius:10px;background:#0e141c;border:1px solid var(--line)}.stat strong{display:block;font-size:1.6rem;color:var(--gold)}.stat span{font-size:.78rem;color:var(--muted)}.list{display:grid;gap:8px}.item{background:#101720;border:1px solid #2c3948;border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}.item small{display:block;color:var(--muted)}.voteitem{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.bar{height:5px;background:#273342;border-radius:8px;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;background:var(--gold)}.section{display:none}.section.active{display:block}.full{grid-column:1/-1}.footer{text-align:center;color:var(--muted);font-size:.8rem;padding:22px}.empty{color:var(--muted);padding:14px;border:1px dashed var(--line);border-radius:10px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.row{grid-template-columns:1fr}.panel{padding:16px}.stats{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="eyebrow">Horde • Guild Recruitment</div><h1>⚔ HORDE GUILD HQ</h1><p>WoW: Forever — claim your race/class, help build the roster, and vote for our guild name before launch.</p></header>
+<main>
+<div class="notice" id="connectionNotice">Connecting to the shared guild database… If this is your first setup, follow README.md to connect Supabase.</div>
+<div class="tabs">
+<button class="tab active" data-tab="signup">⚔ Pick Your Character</button>
+<button class="tab" data-tab="roster">🛡 Guild Roster</button>
+<button class="tab" data-tab="vote">🗳 Guild Name Vote</button>
+<button class="tab" data-tab="suggest">💡 Suggest a Name</button>
+</div>
+<section class="section active" id="signup">
+<div class="layout">
+<div class="panel">
+<h2>Claim your character</h2><p class="sub">Choose your Horde race and class, then add your player name.</p>
+<form id="signupForm">
+<label for="playerName">Player / Discord name</label><input id="playerName" maxlength="60" required placeholder="e.g. Thrall#1234">
+<div class="row"><div><label for="race">Race</label><select id="race" required><option value="">Choose race…</option><option>Orc</option><option>Undead</option><option>Tauren</option><option>Troll</option><option>Other / Not sure</option></select></div>
+<div><label for="className">Class</label><select id="className" required><option value="">Choose class…</option><option>Warrior</option><option>Paladin</option><option>Hunter</option><option>Rogue</option><option>Priest</option><option>Shaman</option><option>Mage</option><option>Warlock</option><option>Druid</option><option>Other / Not sure</option></select></div></div>
+<div class="row"><div><label for="role">Preferred role</label><select id="role"><option>Not sure / flexible</option><option>Tank</option><option>Healer</option><option>DPS</option></select></div><div><label for="commitment">Play style</label><select id="commitment"><option>Regular</option><option>Casual</option><option>Hardcore / Progression</option></select></div></div>
+<label for="notes">Optional notes</label><input id="notes" maxlength="180" placeholder="Availability, alt plans, etc.">
+<button class="primary" type="submit">CLAIM MY CHARACTER</button><div class="status" id="signupStatus" aria-live="polite"></div>
+</form></div>
+<div class="panel"><h2>Guild at a glance</h2><p class="sub">Live totals update when the shared database is connected.</p>
+<div class="stats"><div class="stat"><strong id="playerTotal">0</strong><span>Players signed up</span></div><div class="stat"><strong id="voteTotal">0</strong><span>Votes cast</span></div><div class="stat"><strong id="ideaTotal">0</strong><span>Name ideas</span></div></div>
+<h3>Class count</h3><div id="classCounts" class="list"><div class="empty">Roster stats will appear here.</div></div>
+</div></div></section>
+<section class="section" id="roster"><div class="panel"><h2>Guild roster</h2><p class="sub">Everyone's submitted character picks.</p><div id="rosterList" class="list"><div class="empty">Loading roster…</div></div></div></section>
+<section class="section" id="vote"><div class="layout">
+<div class="panel"><h2>Vote for our guild name</h2><p class="sub">One vote per person is the honor-system rule. Enter your name so the guild can track votes.</p>
+<form id="voteForm"><label for="voterName">Your player / Discord name</label><input id="voterName" required maxlength="60" placeholder="Your name"><label for="guildChoice">Choose a guild name</label><select id="guildChoice" required><option value="">Choose a name…</option></select><button class="primary" type="submit">CAST MY VOTE</button><div class="status" id="voteStatus" aria-live="polite"></div></form></div>
+<div class="panel"><h2>Current standings</h2><p class="sub">Vote totals from all connected members.</p><div id="voteResults" class="list"><div class="empty">Loading votes…</div></div></div>
+</div></section>
+<section class="section" id="suggest"><div class="layout">
+<div class="panel"><h2>Suggest a guild name</h2><p class="sub">Give the guild another option to consider.</p>
+<form id="ideaForm"><label for="suggestedName">Guild name idea</label><input id="suggestedName" required maxlength="70" placeholder="Your brilliant guild name"><label for="suggestedBy">Your player / Discord name</label><input id="suggestedBy" required maxlength="60" placeholder="Your name"><label for="reason">Why this name? (optional)</label><textarea id="reason" maxlength="300" placeholder="Theme, joke, lore reference…"></textarea><button class="primary" type="submit">SUBMIT NAME IDEA</button><div class="status" id="ideaStatus" aria-live="polite"></div></form></div>
+<div class="panel"><h2>Community suggestions</h2><p class="sub">Names submitted by guild members.</p><div id="ideaList" class="list"><div class="empty">Loading suggestions…</div></div></div>
+</div></section>
+<div class="footer">Horde Guild HQ • Community-made signup page • Configure the shared database before publishing.</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/*
+ SETUP: Paste your Supabase Project URL and anon/publishable key below.
+ Never put a service_role key in this public website.
+*/
+const SUPABASE_URL = "sb_publishable_GPB0fs3ZYbFUeRplC1NTBA_n-louMm4";
+const SUPABASE_ANON_KEY = "sb_secret_nmA1VEtGjbBvwIiOWyTfiA_hGCpRDy4";
+const starterNames = ["The Old Guard","Echoes of Azeroth","Ashen Oath","Loot Goblins","One More Pull","Black Anvil","Wipe Night","Doomhammer's Chosen","No Mechanics","Legacy of Lordaeron"];
+let db = null, connected = false;
+const $ = id => document.getElementById(id);
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
+ document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));
+ document.querySelectorAll(".section").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab));
+}));
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function setStatus(id,msg,error=false){$(id).textContent=msg;$(id).classList.toggle("error",error);}
+function needConnection(){return !connected && (setStatus("signupStatus","Database isn't connected yet. Follow README.md setup steps first.",true),true);}
+async function init(){
+ if(!SUPABASE_URL.startsWith("https://") || SUPABASE_ANON_KEY.includes("PASTE_")){
+   $("connectionNotice").textContent="Setup needed: connect the shared database using the steps in README.md. The page design is ready, but signups/votes won't be shared until connected.";
+   $("connectionNotice").style.borderColor="#8f6b32"; return;
+ }
+ try{
+  db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  const {error}=await db.from("players").select("id").limit(1);
+  if(error) throw error;
+  connected=true; $("connectionNotice").textContent="Connected — signups, suggestions, and votes are shared with your guild.";
+  $("connectionNotice").style.background="#153126"; $("connectionNotice").style.color="#b7f2d0"; $("connectionNotice").style.borderColor="#2f7552";
+  await loadAll();
+ }catch(e){$("connectionNotice").textContent="Database connection needs attention. Check your Supabase URL/key and run supabase.sql. Details: "+e.message;}
+}
+async function loadAll(){
+ await Promise.all([loadRoster(),loadIdeas(),loadVotes()]);
+}
+async function loadRoster(){
+ if(!connected)return;
+ const {data,error}=await db.from("players").select("*").order("created_at",{ascending:false}).limit(300);
+ if(error){$("rosterList").innerHTML='<div class="empty">Could not load roster: '+esc(error.message)+'</div>';return;}
+ $("playerTotal").textContent=data.length;
+ if(!data.length)$("rosterList").innerHTML='<div class="empty">No one has signed up yet. Be the first!</div>';
+ else $("rosterList").innerHTML=data.map(p=>`<div class="item"><div><strong>${esc(p.player_name)}</strong><small>${esc(p.race)} ${esc(p.class_name)} · ${esc(p.role||"Flexible")} · ${esc(p.commitment||"Regular")}</small>${p.notes?`<small>${esc(p.notes)}</small>`:""}</div></div>`).join("");
+ const counts={};data.forEach(p=>counts[p.class_name]=(counts[p.class_name]||0)+1);
+ const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+ $("classCounts").innerHTML=sorted.length?sorted.map(([n,c])=>`<div class="item"><span>${esc(n)}</span><strong>${c}</strong></div>`).join(""):'<div class="empty">Roster stats will appear here.</div>';
+}
+async function loadIdeas(){
+ if(!connected)return;
+ const {data,error}=await db.from("guild_ideas").select("*").order("created_at",{ascending:false}).limit(200);
+ if(error){$("ideaList").innerHTML='<div class="empty">Could not load suggestions: '+esc(error.message)+'</div>';return;}
+ $("ideaTotal").textContent=data.length;
+ const all=[...new Set([...starterNames,...data.map(x=>x.name)])];
+ $("guildChoice").innerHTML='<option value="">Choose a name…</option>'+all.map(n=>`<option>${esc(n)}</option>`).join("");
+ $("ideaList").innerHTML=[...data].reverse().map(x=>`<div class="item"><div><strong>${esc(x.name)}</strong><small>Suggested by ${esc(x.suggested_by)}</small>${x.reason?`<small>${esc(x.reason)}</small>`:""}</div></div>`).join("")||'<div class="empty">No member suggestions yet.</div>';
+}
+async function loadVotes(){
+ if(!connected)return;
+ const {data,error}=await db.from("guild_votes").select("guild_name");
+ if(error){$("voteResults").innerHTML='<div class="empty">Could not load votes: '+esc(error.message)+'</div>';return;}
+ $("voteTotal").textContent=data.length;
+ const all=[...new Set([...starterNames,...(await db.from("guild_ideas").select("name")).data?.map(x=>x.name)||[]])];
+ const counts=all.map(n=>[n,data.filter(v=>v.guild_name===n).length]).sort((a,b)=>b[1]-a[1]);
+ const max=Math.max(1,...counts.map(x=>x[1]));
+ $("voteResults").innerHTML=counts.map(([n,c])=>`<div class="item voteitem"><div><strong>${esc(n)}</strong><div class="bar"><span style="width:${c/max*100}%"></span></div></div><strong>${c}</strong></div>`).join("");
+}
+$("signupForm").addEventListener("submit",async e=>{
+ e.preventDefault();if(needConnection())return;
+ const payload={player_name:$("playerName").value.trim(),race:$("race").value,class_name:$("className").value,role:$("role").value,commitment:$("commitment").value,notes:$("notes").value.trim()};
+ const {error}=await db.from("players").insert(payload);
+ if(error){setStatus("signupStatus",error.message,true);return;}
+ e.target.reset();setStatus("signupStatus","Character claimed! You're on the roster.");await loadRoster();
+});
+$("voteForm").addEventListener("submit",async e=>{
+ e.preventDefault();if(needConnection())return;
+ const payload={voter_name:$("voterName").value.trim(),guild_name:$("guildChoice").value};
+ const {error}=await db.from("guild_votes").insert(payload);
+ if(error){setStatus("voteStatus",error.message,true);return;}
+ setStatus("voteStatus","Vote recorded — thanks!");$("guildChoice").value="";await loadVotes();
+});
+$("ideaForm").addEventListener("submit",async e=>{
+ e.preventDefault();if(needConnection())return;
+ const payload={name:$("suggestedName").value.trim(),suggested_by:$("suggestedBy").value.trim(),reason:$("reason").value.trim()};
+ const {error}=await db.from("guild_ideas").insert(payload);
+ if(error){setStatus("ideaStatus",error.message,true);return;}
+ e.target.reset();setStatus("ideaStatus","Suggestion submitted!");await loadIdeas();await loadVotes();
+});
+init();
+</script>
+</body></html>
